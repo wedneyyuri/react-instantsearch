@@ -49,8 +49,8 @@ export default function createInstantSearchManager({
 
   const store = createStore({
     widgets: initialState,
+    results: hydrate(resultsState),
     metadata: [],
-    results: resultsState || null,
     error: null,
     searching: false,
     isSearchStalled: true,
@@ -265,6 +265,26 @@ export default function createInstantSearchManager({
         store.setState(nextState);
       }, stalledSearchDelay);
     }
+  }
+
+  function hydrate(results = []) {
+    if (Array.isArray(results)) {
+      return results.reduce(
+        (acc, result) => ({
+          ...acc,
+          [result._internalIndexId]: new algoliasearchHelper.SearchResults(
+            new algoliasearchHelper.SearchParameters(result.state),
+            result._originalResponse.results
+          ),
+        }),
+        {}
+      );
+    }
+
+    return new algoliasearchHelper.SearchResults(
+      new algoliasearchHelper.SearchParameters(results.state),
+      results._originalResponse.results
+    );
   }
 
   // Called whenever a widget has been rendered with new props.
