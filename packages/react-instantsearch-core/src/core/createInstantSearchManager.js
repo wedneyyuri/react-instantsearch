@@ -47,9 +47,11 @@ export default function createInstantSearchManager({
 
   const widgetsManager = createWidgetsManager(onWidgetsUpdate);
 
+  hydrateSearchClient(resultsState);
+
   const store = createStore({
     widgets: initialState,
-    results: hydrate(resultsState),
+    results: hydrateSearchResults(resultsState),
     metadata: [],
     error: null,
     searching: false,
@@ -267,7 +269,7 @@ export default function createInstantSearchManager({
     }
   }
 
-  function hydrate(results = []) {
+  function hydrateSearchResults(results = []) {
     if (Array.isArray(results)) {
       return results.reduce(
         (acc, result) => ({
@@ -285,6 +287,36 @@ export default function createInstantSearchManager({
       new algoliasearchHelper.SearchParameters(results.state),
       results._originalResponse.results
     );
+  }
+
+  function hydrateSearchClient(results = []) {
+    if (Array.isArray(results)) {
+      results.forEach(result => {
+        createSearchClientCacheEntry(result);
+      });
+
+      return;
+    }
+
+    createSearchClientCacheEntry(results);
+  }
+
+  function createSearchClientCacheEntry(value) {
+    // At the moment the API to hydrate the cache from the outside it not
+    // available. The key used for the cache never changed yet. It might
+    // happen with the V4 but we'll know it. Worst case hydration is not
+    // useful.
+    const key = `/1/indexes/*/queries_body_${JSON.stringify({
+      requests: value._originalResponse.results.map(result => ({
+        indexName: result.index,
+        params: result.params,
+      })),
+    })}`;
+
+    searchClient.cache = {
+      ...searchClient.cache,
+      [key]: value._originalResponse,
+    };
   }
 
   // Called whenever a widget has been rendered with new props.
