@@ -1,5 +1,5 @@
 import algoliasearch from 'algoliasearch/lite';
-import App from './index';
+import App from './App/index';
 
 export const createApp = () => {
   const indexName = 'instant_search';

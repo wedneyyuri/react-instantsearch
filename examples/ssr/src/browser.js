@@ -1,6 +1,6 @@
 import React from 'react';
 import ReactDOM from 'react-dom';
-import { createApp } from './App/createApp';
+import { createApp } from './createApp';
 
 const { App, props } = createApp();
 
