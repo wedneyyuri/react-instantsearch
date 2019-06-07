@@ -10,8 +10,6 @@
 // But the `/server` import will fallback into this file instead of the correct
 // one the `dist` folder.
 
-var server = require('./dist/cjs/server');
+var createInstantSearchServer = require('./dist/cjs/server');
 
-module.exports = {
-  createInstantSearch: server.createInstantSearch,
-};
+module.exports = createInstantSearchServer;
