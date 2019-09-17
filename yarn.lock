@@ -3028,6 +3028,11 @@
   resolved "https://registry.yarnpkg.com/@nodelib/fs.stat/-/fs.stat-1.1.3.tgz#2b5a3ab3f918cca48a8c754c08168e3f03eba61b"
   integrity sha512-shAmDyaQC4H92APFoIaVDHCx5bStIocgvbwQyxPRrbUY20V1EYTbSDchWbuwlMG3V17cprZhA6+78JfB+3DTPw==
 
+"@nunomaduro/lightsearch@^4.0.0-alpha.1":
+  version "4.0.0-alpha.1"
+  resolved "https://registry.yarnpkg.com/@nunomaduro/lightsearch/-/lightsearch-4.0.0-alpha.1.tgz#97e7d8deabba78494803e0120a5f2ce286546b8f"
+  integrity sha512-Tv81DCO6+NDL6Oef0YzHYRdn3bcqitDTgg+v9zCktqpNF6N1Y6JxK9m4ILUOt59+omXyQMtAvPZT+0cRL5OfsA==
+
 "@octokit/endpoint@^5.1.0":
   version "5.3.1"
   resolved "https://registry.yarnpkg.com/@octokit/endpoint/-/endpoint-5.3.1.tgz#4a1714c7d35c1ed074e898c5f4a9897541581f79"

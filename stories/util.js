@@ -1,7 +1,7 @@
 import React, { useState, useMemo } from 'react';
 import PropTypes from 'prop-types';
 import { linkTo } from '@storybook/addon-links';
-import algoliasearch from 'algoliasearch/lite';
+import { algoliasearch } from '@nunomaduro/lightsearch/dist/umd/algoliasearch-lite.min';
 import {
   InstantSearch,
   ClearRefinements,
@@ -63,7 +63,18 @@ export const WrapWithHits = ({
   onSearchStateChange,
 }) => {
   const searchClient = useMemo(() => {
-    return algoliasearch(appId, apiKey);
+    const client = algoliasearch(appId, apiKey);
+    const wrapForMultiIndex = (client, method) => reqs =>
+      Promise.all(
+        reqs.map(req =>
+          client.initIndex(req.indexName)[method](req.params.query, req.params)
+        )
+      ).then(results => ({ results }));
+
+    return {
+      search: wrapForMultiIndex(client, 'search'),
+      searchForFacetValues: wrapForMultiIndex(client, 'searchForFacetValues'),
+    };
   }, [appId, apiKey]);
 
   const sourceCodeUrl = `https://github.com/algolia/react-instantsearch/tree/master/stories/${linkedStoryGroup}.stories.js`;
